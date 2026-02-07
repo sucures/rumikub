@@ -1,5 +1,6 @@
 // Configuración de Redes Sociales
 import axios from 'axios';
+import { TwitterApi } from 'twitter-api-v2';
 
 export interface SocialMediaConfig {
   youtube: {
@@ -185,31 +186,172 @@ export class TelegramService {
 
 // Twitter/X Integration
 export class TwitterService {
-  async postTweet(text: string, mediaUrl?: string) {
-    if (!config.twitter.enabled) return;
+  private client: TwitterApi | null = null;
 
-    // Implementación con Twitter API v2
-    // Necesitarás usar una librería como twitter-api-v2
-    console.log('Posting to Twitter:', text);
-    // TODO: Implementar con twitter-api-v2 o similar
+  constructor() {
+    if (config.twitter.enabled && config.twitter.apiKey && config.twitter.apiSecret) {
+      this.client = new TwitterApi({
+        appKey: config.twitter.apiKey,
+        appSecret: config.twitter.apiSecret,
+        accessToken: config.twitter.accessToken,
+        accessSecret: config.twitter.accessTokenSecret,
+      });
+    }
+  }
+
+  async postTweet(text: string, mediaUrl?: string) {
+    if (!config.twitter.enabled || !this.client) {
+      console.log('Twitter not enabled or not configured');
+      return null;
+    }
+
+    try {
+      // Si hay una imagen, primero subirla
+      if (mediaUrl) {
+        // Descargar la imagen
+        const imageResponse = await axios.get(mediaUrl, { responseType: 'arraybuffer' });
+        const imageBuffer = Buffer.from(imageResponse.data);
+
+        // Subir la imagen a Twitter
+        const mediaId = await this.client.v1.uploadMedia(imageBuffer, { 
+          mimeType: imageResponse.headers['content-type'] 
+        });
+
+        // Publicar el tweet con la imagen
+        const tweet = await this.client.v2.tweet({
+          text,
+          media: { media_ids: [mediaId] }
+        });
+
+        console.log('Tweet posted successfully with media:', tweet.data.id);
+        return tweet.data;
+      } else {
+        // Publicar el tweet sin imagen
+        const tweet = await this.client.v2.tweet(text);
+        console.log('Tweet posted successfully:', tweet.data.id);
+        return tweet.data;
+      }
+    } catch (error) {
+      console.error('Error posting to Twitter:', error);
+      throw error;
+    }
   }
 
   async getMentions() {
-    if (!config.twitter.enabled) return [];
+    if (!config.twitter.enabled || !this.client) {
+      return [];
+    }
 
-    // TODO: Implementar
-    return [];
+    try {
+      // Obtener el ID del usuario autenticado
+      const me = await this.client.v2.me();
+      
+      // Obtener las menciones del usuario
+      const mentions = await this.client.v2.userMentionTimeline(me.data.id, {
+        max_results: 10,
+        'tweet.fields': ['created_at', 'author_id', 'text'],
+      });
+
+      const mentionsList = [];
+      for await (const mention of mentions) {
+        mentionsList.push({
+          id: mention.id,
+          text: mention.text,
+          authorId: mention.author_id,
+          createdAt: mention.created_at,
+        });
+      }
+
+      return mentionsList;
+    } catch (error) {
+      console.error('Error getting Twitter mentions:', error);
+      return [];
+    }
   }
 }
 
 // Instagram Integration
 export class InstagramService {
-  async postPhoto(imageUrl: string, caption: string) {
-    if (!config.instagram.enabled) return;
+  private accessToken: string;
+  private apiVersion = 'v18.0';
 
-    // Implementación con Instagram Graph API
-    console.log('Posting to Instagram:', caption);
-    // TODO: Implementar con Instagram Graph API
+  constructor() {
+    this.accessToken = config.instagram.accessToken;
+  }
+
+  async postPhoto(imageUrl: string, caption: string) {
+    if (!config.instagram.enabled || !this.accessToken) {
+      console.log('Instagram not enabled or not configured');
+      return null;
+    }
+
+    try {
+      // Obtener el Instagram Business Account ID
+      const accountResponse = await axios.get(
+        `https://graph.facebook.com/${this.apiVersion}/me/accounts`,
+        {
+          params: {
+            access_token: this.accessToken,
+          },
+        }
+      );
+
+      if (!accountResponse.data.data || accountResponse.data.data.length === 0) {
+        throw new Error('No Instagram Business Account found');
+      }
+
+      const pageId = accountResponse.data.data[0].id;
+      
+      // Obtener el Instagram Business Account ID desde la página
+      const igAccountResponse = await axios.get(
+        `https://graph.facebook.com/${this.apiVersion}/${pageId}`,
+        {
+          params: {
+            fields: 'instagram_business_account',
+            access_token: this.accessToken,
+          },
+        }
+      );
+
+      const igAccountId = igAccountResponse.data.instagram_business_account?.id;
+      
+      if (!igAccountId) {
+        throw new Error('Instagram Business Account ID not found');
+      }
+
+      // Crear un contenedor de medios (media container)
+      const containerResponse = await axios.post(
+        `https://graph.facebook.com/${this.apiVersion}/${igAccountId}/media`,
+        null,
+        {
+          params: {
+            image_url: imageUrl,
+            caption: caption,
+            access_token: this.accessToken,
+          },
+        }
+      );
+
+      const creationId = containerResponse.data.id;
+
+      // Publicar el contenedor de medios
+      const publishResponse = await axios.post(
+        `https://graph.facebook.com/${this.apiVersion}/${igAccountId}/media_publish`,
+        null,
+        {
+          params: {
+            creation_id: creationId,
+            access_token: this.accessToken,
+          },
+        }
+      );
+
+      console.log('Photo posted to Instagram successfully:', publishResponse.data.id);
+      return publishResponse.data;
+    } catch (error) {
+      console.error('Error posting to Instagram:', error);
+      throw error;
+    }
   }
 }
 
