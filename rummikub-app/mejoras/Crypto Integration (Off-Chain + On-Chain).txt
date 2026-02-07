@@ -1,0 +1,53 @@
+// apps/api-server/src/modules/crypto/crypto.service.ts
+import { ethers } from 'ethers';
+import { GameEscrowABI } from '@rummikub/contracts';
+
+export class CryptoService {
+  private provider: ethers.Provider;
+  private escrowContract: ethers.Contract;
+  private signerWallet: ethers.Wallet;
+
+  // Create signed message for game result (EIP-712)
+  async createGameResultSignature(gameResult: GameResult): Promise<string> {
+    const domain = {
+      name: 'RummikubGame',
+      version: '1',
+      chainId: 137, // Polygon
+      verifyingContract: this.escrowContract.address,
+    };
+
+    const types = {
+      GameResult: [
+        { name: 'gameId', type: 'bytes32' },
+        { name: 'winner', type: 'address' },
+        { name: 'loser', type: 'address' },
+        { name: 'amount', type: 'uint256' },
+        { name: 'timestamp', type: 'uint256' },
+      ],
+    };
+
+    const value = {
+      gameId: ethers.id(gameResult.gameId),
+      winner: gameResult.winnerAddress,
+      loser: gameResult.loserAddress,
+      amount: ethers.parseEther(gameResult.amount.toString()),
+      timestamp: Math.floor(Date.now() / 1000),
+    };
+
+    return await this.signerWallet.signTypedData(domain, types, value);
+  }
+
+  // Player claims their winnings on-chain with the signature
+  async verifyAndClaimPrize(
+    gameId: string,
+    signature: string,
+    playerAddress: string
+  ): Promise<ethers.TransactionResponse> {
+    // Contract validates signature and transfers funds
+    return await this.escrowContract.claimPrize(
+      gameId,
+      signature,
+      { gasLimit: 200000 }
+    );
+  }
+}

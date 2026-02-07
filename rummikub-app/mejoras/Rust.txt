@@ -1,0 +1,91 @@
+// packages/@rummikub/game-engine/rust/src/lib.rs
+use wasm_bindgen::prelude::*;
+use serde::{Deserialize, Serialize};
+
+#[wasm_bindgen]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Tile {
+    pub color: u8,      // 0: Red, 1: Blue, 2: Black, 3: Yellow
+    pub value: u8,      // 1-13
+    pub is_joker: bool,
+}
+
+#[wasm_bindgen]
+pub struct GameEngine {
+    board: Vec<Vec<Tile>>,
+    hands: Vec<Vec<Tile>>,
+    pool: Vec<Tile>,
+}
+
+#[wasm_bindgen]
+impl GameEngine {
+    #[wasm_bindgen(constructor)]
+    pub fn new(num_players: usize) -> GameEngine {
+        // Initialize game
+    }
+
+    /// Validates if a set of tiles forms a valid group (same number, different colors)
+    pub fn validate_group(&self, tiles: &[Tile]) -> bool {
+        if tiles.len() < 3 || tiles.len() > 4 {
+            return false;
+        }
+        
+        let value = tiles[0].value;
+        let mut colors_seen = [false; 4];
+        
+        for tile in tiles {
+            if tile.is_joker {
+                continue;
+            }
+            if tile.value != value || colors_seen[tile.color as usize] {
+                return false;
+            }
+            colors_seen[tile.color as usize] = true;
+        }
+        true
+    }
+
+    /// Validates if a set of tiles forms a valid run (consecutive numbers, same color)
+    pub fn validate_run(&self, tiles: &[Tile]) -> bool {
+        if tiles.len() < 3 {
+            return false;
+        }
+        
+        let color = tiles.iter().find(|t| !t.is_joker).map(|t| t.color);
+        if color.is_none() {
+            return true; // All jokers
+        }
+        
+        let color = color.unwrap();
+        let mut sorted: Vec<_> = tiles.iter().collect();
+        sorted.sort_by_key(|t| t.value);
+        
+        let mut expected_value = sorted[0].value;
+        for tile in sorted {
+            if !tile.is_joker {
+                if tile.color != color || tile.value != expected_value {
+                    return false;
+                }
+            }
+            expected_value += 1;
+        }
+        true
+    }
+
+    /// Validates entire board state
+    #[wasm_bindgen]
+    pub fn validate_board(&self) -> bool {
+        for set in &self.board {
+            if !self.validate_group(set) && !self.validate_run(set) {
+                return false;
+            }
+        }
+        true
+    }
+
+    /// AI move calculation using optimized algorithms
+    #[wasm_bindgen]
+    pub fn calculate_ai_move(&self, difficulty: u8) -> JsValue {
+        // AI logic based on difficulty
+    }
+}
