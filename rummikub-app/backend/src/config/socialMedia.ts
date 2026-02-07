@@ -1,5 +1,6 @@
 // Configuración de Redes Sociales
 import axios from 'axios';
+import { TwitterApi } from 'twitter-api-v2';
 
 export interface SocialMediaConfig {
   youtube: {
@@ -185,20 +186,101 @@ export class TelegramService {
 
 // Twitter/X Integration
 export class TwitterService {
-  async postTweet(text: string, mediaUrl?: string) {
-    if (!config.twitter.enabled) return;
+  private client: TwitterApi | null = null;
+  private cachedUserId: string | null = null;
 
-    // Implementación con Twitter API v2
-    // Necesitarás usar una librería como twitter-api-v2
-    console.log('Posting to Twitter:', text);
-    // TODO: Implementar con twitter-api-v2 o similar
+  private getClient() {
+    if (!config.twitter.enabled) return null;
+    if (this.client) return this.client;
+
+    const { apiKey, apiSecret, accessToken, accessTokenSecret } = config.twitter;
+    if (!apiKey || !apiSecret || !accessToken || !accessTokenSecret) {
+      throw new Error('Twitter credentials are not fully configured.');
+    }
+
+    this.client = new TwitterApi({
+      appKey: apiKey,
+      appSecret: apiSecret,
+      accessToken,
+      accessSecret: accessTokenSecret,
+    });
+
+    return this.client;
   }
 
-  async getMentions() {
+  private async getAuthenticatedUserId() {
+    if (this.cachedUserId) return this.cachedUserId;
+
+    const client = this.getClient();
+    if (!client) return null;
+
+    const me = await client.v2.me();
+    this.cachedUserId = me.data.id;
+    return this.cachedUserId;
+  }
+
+  async postTweet(text: string, mediaUrl?: string) {
+    if (!config.twitter.enabled) return null;
+
+    try {
+      const client = this.getClient();
+      if (!client) return null;
+
+      if (!mediaUrl) {
+        const result = await client.v2.tweet(text);
+        return result.data;
+      }
+
+      const mediaResponse = await axios.get(mediaUrl, {
+        responseType: 'arraybuffer',
+      });
+      const mimeTypeHeader = mediaResponse.headers['content-type'];
+      const uploadOptions = mimeTypeHeader
+        ? { mimeType: mimeTypeHeader }
+        : undefined;
+      const mediaId = await client.v1.uploadMedia(
+        Buffer.from(mediaResponse.data),
+        uploadOptions
+      );
+
+      const result = await client.v2.tweet({
+        text,
+        media: { media_ids: [mediaId] },
+      });
+
+      return result.data;
+    } catch (error) {
+      console.error('Error posting to Twitter:', error);
+      throw error;
+    }
+  }
+
+  async getMentions(maxResults = 20) {
     if (!config.twitter.enabled) return [];
 
-    // TODO: Implementar
-    return [];
+    try {
+      const client = this.getClient();
+      if (!client) return [];
+
+      const userId = await this.getAuthenticatedUserId();
+      if (!userId) return [];
+
+      const mentions = await client.v2.userMentionTimeline(userId, {
+        max_results: Math.min(Math.max(maxResults, 5), 100),
+        'tweet.fields': ['created_at', 'author_id', 'public_metrics'],
+      });
+
+      return (mentions.data ?? []).map((mention) => ({
+        id: mention.id,
+        text: mention.text,
+        authorId: mention.author_id ?? '',
+        createdAt: mention.created_at ?? '',
+        metrics: mention.public_metrics ?? {},
+      }));
+    } catch (error) {
+      console.error('Error fetching Twitter mentions:', error);
+      return [];
+    }
   }
 }
 
