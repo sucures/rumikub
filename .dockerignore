@@ -1,0 +1,9 @@
+node_modules
+frontend
+mobile
+scripts
+.git
+.github
+.railway
+railway.toml
+nixpacks.toml
