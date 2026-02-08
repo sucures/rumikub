@@ -1,0 +1,55 @@
+// apps/game-server/src/anti-cheat/CheatDetector.ts
+export class CheatDetector {
+  private moveHistory: Map<string, MoveRecord[]> = new Map();
+  private suspiciousPlayers: Set<string> = new Set();
+
+  analyzeMove(playerId: string, move: Move, gameState: GameState): CheatAnalysis {
+    const analysis: CheatAnalysis = {
+      isValid: true,
+      flags: [],
+      severity: 0,
+    };
+
+    // 1. Timing analysis - superhuman speed detection
+    const timeSinceLastMove = this.getTimeSinceLastMove(playerId);
+    if (timeSinceLastMove < 100) { // Less than 100ms
+      analysis.flags.push('SUSPICIOUS_SPEED');
+      analysis.severity += 20;
+    }
+
+    // 2. Impossible move detection
+    if (!this.isMovePhysicallyPossible(move, gameState)) {
+      analysis.flags.push('IMPOSSIBLE_MOVE');
+      analysis.isValid = false;
+      analysis.severity += 100;
+    }
+
+    // 3. Pattern analysis for bot detection
+    const movePattern = this.analyzePattern(playerId);
+    if (movePattern.isBotLike) {
+      analysis.flags.push('BOT_PATTERN');
+      analysis.severity += 50;
+    }
+
+    // 4. State manipulation detection
+    if (this.detectStateManipulation(move, gameState)) {
+      analysis.flags.push('STATE_MANIPULATION');
+      analysis.isValid = false;
+      analysis.severity += 100;
+    }
+
+    // Mark player as suspicious
+    if (analysis.severity > 50) {
+      this.suspiciousPlayers.add(playerId);
+      this.reportToModeration(playerId, analysis);
+    }
+
+    return analysis;
+  }
+
+  private isMovePhysicallyPossible(move: Move, state: GameState): boolean {
+    // Check if tiles being moved exist in player's hand or board
+    // Check if destination is valid
+    // etc.
+  }
+}

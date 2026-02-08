@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Rummikub Pro - El Mejor Juego de Fichas del Mundo</title>
+    <meta name="title" content="Rummikub Pro - El Mejor Juego de Fichas del Mundo" />
+    <meta name="description" content="Juega Rummikub online con multijugador en tiempo real, IA avanzada, torneos, chat, criptomonedas y personalización Premium 3.0. Únete a la mejor comunidad de Rummikub." />
+    <meta name="keywords" content="rummikub, juego de fichas, multijugador, torneos, criptomonedas, nft, premium, juego online" />
+    <meta name="author" content="LLC&JTH" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Spanish" />
+    <meta name="revisit-after" content="7 days" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rummikub-pro.com/" />
+    <meta property="og:title" content="Rummikub Pro - El Mejor Juego de Fichas del Mundo" />
+    <meta property="og:description" content="Juega Rummikub online con multijugador en tiempo real, IA avanzada, torneos, chat, criptomonedas y personalización Premium 3.0." />
+    <meta property="og:image" content="https://rummikub-pro.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Rummikub Pro" />
+    <meta property="og:locale" content="es_ES" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://rummikub-pro.com/" />
+    <meta name="twitter:title" content="Rummikub Pro - El Mejor Juego de Fichas del Mundo" />
+    <meta name="twitter:description" content="Juega Rummikub online con multijugador en tiempo real, IA avanzada, torneos, chat, criptomonedas y personalización Premium 3.0." />
+    <meta name="twitter:image" content="https://rummikub-pro.com/twitter-image.png" />
+    <meta name="twitter:creator" content="@rummikubpro" />
+    
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#FFD700" />
+    <meta name="msapplication-TileColor" content="#FFD700" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- PWA -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Rummikub Pro" />
+    
+    <!-- Preconnect para mejor rendimiento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.rummikub-pro.com" />
+    
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://www.googleapis.com" />
+    <link rel="dns-prefetch" href="https://api.telegram.org" />
+    <link rel="dns-prefetch" href="https://api.twitter.com" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://rummikub-pro.com/" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    
+    <!-- Performance -->
+    <link rel="preload" href="/logo.svg" as="image" />
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Rummikub Pro",
+      "description": "La mejor aplicación de Rummikub del mundo con multijugador, IA, torneos y criptomonedas",
+      "url": "https://rummikub-pro.com",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Web, iOS, Android",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "1250"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "LLC&JTH",
+        "url": "https://rummikub-pro.com"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

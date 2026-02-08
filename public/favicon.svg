@@ -1,0 +1,18 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="faviconGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF8C00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo -->
+  <rect width="64" height="64" rx="12" fill="url(#faviconGold)"/>
+  
+  <!-- Ficha simplificada -->
+  <rect x="12" y="8" width="40" height="48" rx="6" fill="#FFFFFF" opacity="0.95"/>
+  
+  <!-- Estrella pequeña -->
+  <path d="M 32 20 L 34 26 L 40 26 L 35 30 L 37 36 L 32 32 L 27 36 L 29 30 L 24 26 L 30 26 Z" 
+        fill="url(#faviconGold)"/>
+</svg>

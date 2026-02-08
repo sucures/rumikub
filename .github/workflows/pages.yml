@@ -1,0 +1,50 @@
+# GitHub Pages — static hosting for RUMI ONE token metadata and Sovereign Emblem.
+# Publishes the public-token/ folder so it is available at /public-token/ on the site.
+# No build step; static files only.
+
+name: Deploy token metadata to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare Pages artifact (public-token only)
+        run: |
+          mkdir -p .pages
+          if [ -d "rummikub-app/public-token" ]; then
+            cp -r rummikub-app/public-token .pages/
+          else
+            cp -r public-token .pages/
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.pages'
+
+  deploy-pages:
+    needs: deploy
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

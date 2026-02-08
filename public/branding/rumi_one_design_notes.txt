@@ -1,0 +1,46 @@
+TITLE: OFFICIAL DESIGN — RUMI ONE (R1) SOVEREIGN SEAL
+
+GENERAL DESCRIPTION
+This document defines the official design of the RUMI ONE (R1) Sovereign Seal.
+This emblem is not a commercial logo; it is an institutional, ceremonial, and permanent symbol.
+It represents the identity, sovereignty, and consciousness of the RUMI ONE ecosystem.
+
+AUTHORIZED USE
+The Sovereign Seal must be used only in official contexts, including:
+- Token metadata (RUMI ONE / R1)
+- RUMI Wallet and all official applications
+- Institutional documentation (whitepapers, governance, presentations)
+- Official websites, dashboards, and platforms
+- Ceremonial or institutional materials
+
+PROHIBITIONS
+The Sovereign Seal:
+- MUST NOT be modified, altered, or reinterpreted.
+- MUST NOT be regenerated or redrawn by AI.
+- MUST NOT be used in unofficial or trivial contexts.
+- MUST NOT be combined with other logos without explicit approval.
+
+DESIGN ORIGIN
+The design was created outside Cursor and outside any automated branding system.
+Cursor and any other AI must treat this symbol as:
+- A fixed institutional resource
+- An absolute visual reference
+- An inviolable emblem of RUMI ONE
+
+SYMBOLIC DESCRIPTION
+- Gold outer ring: authority, value, institution, digital nationhood.
+- Black stone interior: foundation, eternity, deep consciousness.
+- Silver infinity symbol: perpetual flow, continuity, expansion of awareness.
+- Integrated “R” and “1”: origin (RUMI) and unity (ONE).
+- Silver “RUMI ONE” inscription: legitimacy, clarity, institutional presence.
+
+INSTRUCTIONS FOR DEVELOPERS AND SYSTEMS
+- Treat the associated visual file (rumi_one_sovereign_emblem.png) as an official resource.
+- Do not overwrite, compress destructively, or regenerate it.
+- Always use this file when the RUMI ONE emblem is required.
+- Any graphical variation requires explicit approval.
+
+FINAL NOTE
+The Sovereign Seal is part of the core identity of RUMI ONE.
+Its function is symbolic, psychological, institutional, and ceremonial.
+It must be preserved, respected, and used with institutional discipline.

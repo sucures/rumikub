@@ -1,0 +1,13 @@
+{
+  "name": "RUMI ONE",
+  "symbol": "R1",
+  "description": "RUMI ONE is the sovereign fungible token of the RumiMind ecosystem. It is used for utility, governance, and long-term alignment. Its identity is anchored to the immutable Sovereign Seal.",
+  "image": "rumi_one_sovereign_emblem.png",
+  "attributes": [
+    { "trait_type": "Sovereign Identity", "value": "RUMI ONE Emblem (Immutable)" },
+    { "trait_type": "Token Type", "value": "Fungible Token (FT)" },
+    { "trait_type": "Total Supply", "value": "1000000000" },
+    { "trait_type": "Decimals", "value": "9" },
+    { "trait_type": "Ecosystem", "value": "RumiMind" }
+  ]
+}

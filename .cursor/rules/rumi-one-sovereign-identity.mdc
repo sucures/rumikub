@@ -1,0 +1,43 @@
+---
+description: RUMI ONE (R1) Sovereign Seal — immutable institutional identity; never modify emblem or design notes
+alwaysApply: true
+---
+
+# RUMI ONE (R1) Sovereign Seal — Institutional Identity
+
+The Sovereign Seal and the design notes are **immutable institutional assets**. They must never be modified, regenerated, redrawn, replaced, or optimized destructively.
+
+## Immutable institutional assets
+
+- **Sovereign Seal:** `public/branding/rumi_one_sovereign_emblem.png`
+- **Design notes:** `public/branding/rumi_one_design_notes.txt`
+
+Do not modify, regenerate, redraw, replace, or optimize destructively either asset.
+
+## Required use of the Sovereign Seal
+
+Use the Sovereign Seal as the official visual identity for:
+
+- Token metadata
+- RUMI Wallet UI
+- Institutional documentation
+- Official interfaces
+
+## Paths
+
+- **In-app path:** `/branding/rumi_one_sovereign_emblem.png`
+- **Token metadata URL pattern:** `https://REPLACE_WITH_YOUR_ORIGIN/branding/rumi_one_sovereign_emblem.png`
+
+In code, always use `RUMI_ONE_EMBLEM_PATH` from `shared/branding.ts`.
+
+## Institutional files to maintain
+
+1. `scripts/rumi-one-token/metadata.json`
+2. `scripts/rumi-one-token/README.md`
+3. `public/branding/README.md`
+4. `shared/branding.ts`
+5. `docs/RUMI_WALLET_SECURITY_WHITEPAPER.md`
+
+## If a task would alter the emblem or its rules
+
+**STOP** and ask for explicit confirmation. Do not proceed otherwise.

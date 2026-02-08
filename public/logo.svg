@@ -1,0 +1,105 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradientes Premium -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF8C00;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="diamondGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E0E7FF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#C7D2FE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A5B4FC;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Sombra para profundidad -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.3"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Efecto de brillo -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Fondo circular con gradiente -->
+  <circle cx="200" cy="200" r="190" fill="url(#goldGradient)" opacity="0.1"/>
+  
+  <!-- Ficha principal central (Joker/Estrella) -->
+  <g transform="translate(200, 200)">
+    <!-- Ficha base con efecto 3D -->
+    <rect x="-60" y="-80" width="120" height="160" rx="15" ry="15" 
+          fill="url(#goldGradient)" filter="url(#shadow)"/>
+    <rect x="-58" y="-78" width="116" height="156" rx="13" ry="13" 
+          fill="url(#goldGradient)" opacity="0.9"/>
+    
+    <!-- Estrella central (Joker) -->
+    <g transform="scale(0.8)">
+      <path d="M 0 -50 L 15 -15 L 50 -15 L 20 5 L 30 40 L 0 20 L -30 40 L -20 5 L -50 -15 L -15 -15 Z" 
+            fill="#FFFFFF" filter="url(#glow)"/>
+      <path d="M 0 -50 L 15 -15 L 50 -15 L 20 5 L 30 40 L 0 20 L -30 40 L -20 5 L -50 -15 L -15 -15 Z" 
+            fill="url(#goldGradient)" opacity="0.3"/>
+    </g>
+  </g>
+  
+  <!-- Fichas decorativas alrededor -->
+  <!-- Ficha Roja -->
+  <g transform="translate(120, 120)">
+    <rect x="-25" y="-35" width="50" height="70" rx="8" ry="8" 
+          fill="#EF4444" filter="url(#shadow)"/>
+    <text x="0" y="8" font-family="Arial Black, sans-serif" font-size="28" 
+          fill="#FFFFFF" text-anchor="middle" font-weight="900">7</text>
+  </g>
+  
+  <!-- Ficha Azul -->
+  <g transform="translate(280, 120)">
+    <rect x="-25" y="-35" width="50" height="70" rx="8" ry="8" 
+          fill="#3B82F6" filter="url(#shadow)"/>
+    <text x="0" y="8" font-family="Arial Black, sans-serif" font-size="28" 
+          fill="#FFFFFF" text-anchor="middle" font-weight="900">13</text>
+  </g>
+  
+  <!-- Ficha Amarilla -->
+  <g transform="translate(120, 280)">
+    <rect x="-25" y="-35" width="50" height="70" rx="8" ry="8" 
+          fill="#FBBF24" filter="url(#shadow)"/>
+    <text x="0" y="8" font-family="Arial Black, sans-serif" font-size="28" 
+          fill="#1F2937" text-anchor="middle" font-weight="900">1</text>
+  </g>
+  
+  <!-- Ficha Negra -->
+  <g transform="translate(280, 280)">
+    <rect x="-25" y="-35" width="50" height="70" rx="8" ry="8" 
+          fill="#1F2937" filter="url(#shadow)"/>
+    <text x="0" y="8" font-family="Arial Black, sans-serif" font-size="28" 
+          fill="#FFFFFF" text-anchor="middle" font-weight="900">10</text>
+  </g>
+  
+  <!-- Texto "RUMMIKUB" -->
+  <text x="200" y="350" font-family="Arial Black, sans-serif" font-size="42" 
+        fill="url(#goldGradient)" text-anchor="middle" font-weight="900" 
+        letter-spacing="2" filter="url(#glow)">RUMMIKUB</text>
+  
+  <!-- Texto "PRO" -->
+  <text x="200" y="375" font-family="Arial, sans-serif" font-size="18" 
+        fill="#666666" text-anchor="middle" font-weight="bold" 
+        letter-spacing="4">PRO</text>
+  
+  <!-- Copyright -->
+  <text x="200" y="390" font-family="Arial, sans-serif" font-size="10" 
+        fill="#999999" text-anchor="middle">© 2024 LLC&amp;JTH. All rights reserved.</text>
+</svg>

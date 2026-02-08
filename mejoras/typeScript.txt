@@ -1,0 +1,27 @@
+// packages/@rummikub/game-engine/typescript/src/engine.ts
+import init, { GameEngine as WasmEngine } from '../wasm/pkg';
+
+export class GameEngine {
+  private wasmEngine: WasmEngine | null = null;
+  private initialized = false;
+
+  async initialize(): Promise<void> {
+    if (this.initialized) return;
+    
+    await init();
+    this.wasmEngine = new WasmEngine(4);
+    this.initialized = true;
+  }
+
+  validateBoard(): boolean {
+    if (!this.wasmEngine) throw new Error('Engine not initialized');
+    return this.wasmEngine.validate_board();
+  }
+
+  // Fallback to JS if WASM fails
+  validateBoardJS(board: TileSet[]): boolean {
+    return board.every(set => 
+      this.isValidGroup(set) || this.isValidRun(set)
+    );
+  }
+}
