@@ -65,7 +65,7 @@ export interface TournamentWithDetails {
 }
 
 export class TournamentService {
-  async createTournament(creatorUserId: string, input: CreateTournamentInput): Promise<TournamentWithDetails> {
+  async createTournament(creatorUserId: string, input: CreateTournamentInput): Promise<TournamentWithDetails | null> {
     const rulesetId = genId('ruleset');
     const rulesetRow: NewTournamentRulesetRow = {
       id: rulesetId,

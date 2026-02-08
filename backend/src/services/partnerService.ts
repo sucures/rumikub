@@ -1,5 +1,5 @@
 // Servicio de Partners y Afiliados
-import { Partner, PartnerReward, User } from '../../../shared/types';
+import { Partner, PartnerReward, User } from '../shared/types.js';
 
 export class PartnerService {
   // Crear nuevo partner
@@ -62,6 +62,7 @@ export class PartnerService {
     // Buscar partner
     // const partner = await PartnerModel.findById(partnerId);
     // if (!partner) throw new Error('Partner not found');
+    const partner = null as unknown as Partner;
 
     // Calcular recompensa según el tipo
     let rewardAmount = 0;

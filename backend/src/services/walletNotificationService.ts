@@ -37,7 +37,7 @@ export function notifySpend(
       logError(`failed type=spend userId=${userId} transactionId=${transactionId}`, err);
     });
     logInfo(`sent type=spend userId=${userId} transactionId=${transactionId}`);
-  } catch (err) {
+  } catch (err: any) {
     logError(`failed type=spend userId=${userId} transactionId=${transactionId}`, err);
   }
 }
@@ -60,7 +60,7 @@ export function notifyTransferOut(
       logError(`failed type=transferOut userId=${userId} transactionId=${transactionId}`, err);
     });
     logInfo(`sent type=transferOut userId=${userId} transactionId=${transactionId}`);
-  } catch (err) {
+  } catch (err: any) {
     logError(`failed type=transferOut userId=${userId} transactionId=${transactionId}`, err);
   }
 }
@@ -83,7 +83,7 @@ export function notifyTransferIn(
       logError(`failed type=transferIn userId=${userId} transactionId=${transactionId}`, err);
     });
     logInfo(`sent type=transferIn userId=${userId} transactionId=${transactionId}`);
-  } catch (err) {
+  } catch (err: any) {
     logError(`failed type=transferIn userId=${userId} transactionId=${transactionId}`, err);
   }
 }
@@ -106,7 +106,7 @@ export function notifyReward(
       logError(`failed type=reward userId=${userId} transactionId=${transactionId}`, err);
     });
     logInfo(`sent type=reward userId=${userId} transactionId=${transactionId}`);
-  } catch (err) {
+  } catch (err: any) {
     logError(`failed type=reward userId=${userId} transactionId=${transactionId}`, err);
   }
 }
@@ -129,7 +129,7 @@ export function notifySimulatedPayment(
       logError(`failed type=simulatedPayment userId=${userId} transactionId=${transactionId}`, err);
     });
     logInfo(`sent type=simulatedPayment userId=${userId} transactionId=${transactionId}`);
-  } catch (err) {
+  } catch (err: any) {
     logError(`failed type=simulatedPayment userId=${userId} transactionId=${transactionId}`, err);
   }
 }

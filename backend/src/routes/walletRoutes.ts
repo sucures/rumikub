@@ -23,7 +23,7 @@ function validateBody(schema: ZodSchema) {
       if (raw.amount !== undefined) raw.amount = Number(raw.amount);
       req.body = schema.parse(raw);
       next();
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof ZodError) {
         const msg = err.errors[0]?.message ?? 'Validation failed';
         return res.status(400).json({ success: false, error: msg, code: 'VALIDATION_ERROR' });
@@ -55,7 +55,7 @@ router.post('/qr/parse', (req, res, next) => {
     const raw = req.body ?? {};
     req.body = qrParseBodySchema.parse(raw);
     next();
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof ZodError) {
       return res.status(400).json({ success: false, error: 'Invalid QR payload', code: 'INVALID_QR_PAYLOAD' });
     }

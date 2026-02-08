@@ -1,5 +1,5 @@
 // Servicio de Temas y Personalización Premium 3.0
-import { Theme, ThemeName, TileDesign, FontSize, Brightness, UserThemeSettings, PremiumTier, TileColorScheme } from '../../../shared/themeTypes';
+import { Theme, ThemeName, TileDesign, FontSize, Brightness, UserThemeSettings, PremiumTier, TileColorScheme } from '../shared/themeTypes.js';
 
 export class ThemeService {
   private themes: Map<ThemeName, Theme> = new Map();

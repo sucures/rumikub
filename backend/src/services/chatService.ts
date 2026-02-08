@@ -1,13 +1,15 @@
 // Servicio de Chat con Fotos
-import { ChatMessage } from '../../../shared/types';
+import { ChatMessage } from '../shared/types.js';
+// @ts-expect-error optional peer dependency for S3 uploads
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { v4 as uuidv4 } from 'uuid';
 import { io } from '../server.js';
 
-export interface PrivateChatMessage extends ChatMessage {
-  recipientId?: string; // Para mensajes privados
-  imageUrl?: string; // URL de la imagen
-  imageThumbnail?: string; // Thumbnail de la imagen
+export interface PrivateChatMessage extends Omit<ChatMessage, 'type'> {
+  type: ChatMessage['type'] | 'image';
+  recipientId?: string;
+  imageUrl?: string;
+  imageThumbnail?: string;
   isPrivate: boolean;
 }
 
@@ -64,7 +66,7 @@ export class ChatService {
       avatar,
       message,
       timestamp: new Date(),
-      type: image ? 'image' : 'text',
+      type: (image ? 'image' : 'text') as PrivateChatMessage['type'],
       gameId,
       imageUrl,
       imageThumbnail,
@@ -115,7 +117,7 @@ export class ChatService {
       avatar,
       message,
       timestamp: new Date(),
-      type: image ? 'image' : 'text',
+      type: (image ? 'image' : 'text') as PrivateChatMessage['type'],
       recipientId,
       imageUrl,
       imageThumbnail,

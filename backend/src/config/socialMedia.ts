@@ -89,7 +89,7 @@ export class YouTubeService {
         publishedAt: item.snippet.publishedAt,
         url: `https://youtube.com/watch?v=${item.id.videoId}`,
       }));
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching YouTube videos:', error);
       return [];
     }
@@ -118,7 +118,7 @@ export class YouTubeService {
         likes: parseInt(video.statistics.likeCount) || 0,
         comments: parseInt(video.statistics.commentCount) || 0,
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching video stats:', error);
       return null;
     }
@@ -151,7 +151,7 @@ export class TelegramService {
         }
       );
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error sending Telegram message:', error);
       throw error;
     }
@@ -176,7 +176,7 @@ export class TelegramService {
         }
       );
       return response.data.result || 0;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error getting channel members:', error);
       return 0;
     }

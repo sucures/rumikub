@@ -1,4 +1,4 @@
-import { WalletError, WalletErrorCode } from '../errors/WalletError';
+import { WalletError, WalletErrorCode } from '../errors/WalletError.js';
 
 export interface WalletErrorResponse {
   statusCode: number;
@@ -13,16 +13,17 @@ export interface WalletErrorResponse {
  */
 export function mapWalletError(err: unknown): WalletErrorResponse {
   if (err instanceof WalletError) {
-    switch (err.code) {
+    const walletErr = err;
+    switch (walletErr.code) {
       case WalletErrorCode.INSUFFICIENT_FUNDS:
       case WalletErrorCode.INVALID_TRANSFER:
       case WalletErrorCode.INVALID_AMOUNT:
-        return { statusCode: 400, body: { error: err.message, code: err.code } };
+        return { statusCode: 400, body: { error: walletErr.message, code: walletErr.code } };
       case WalletErrorCode.WALLET_NOT_FOUND:
-        return { statusCode: 404, body: { error: err.message, code: err.code } };
+        return { statusCode: 404, body: { error: walletErr.message, code: walletErr.code } };
       case WalletErrorCode.SYSTEM_ERROR:
       default:
-        return { statusCode: 500, body: { error: err.message, code: err.code } };
+        return { statusCode: 500, body: { error: walletErr.message, code: walletErr.code } };
     }
   }
   const message = err instanceof Error ? err.message : 'An unexpected error occurred';

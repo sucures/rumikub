@@ -11,7 +11,7 @@ import type {
   Player,
   Move,
   ValidationResult,
-} from '../../../shared/types';
+} from '../shared/types.js';
 
 const COLORS: Color[] = ['red', 'blue', 'yellow', 'black'];
 const VALUES: TileValue[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
@@ -104,14 +104,14 @@ function tilePenalty(t: Tile): number {
 export function validateSet(set: GameSet): boolean {
   if (!set.tiles || set.tiles.length < 3) return false;
 
-  const jokers = set.tiles.filter((t) => t.isJoker);
-  const rest = set.tiles.filter((t) => !t.isJoker);
+  const jokers = set.tiles.filter((t: Tile) => t.isJoker);
+  const rest = set.tiles.filter((t: Tile) => !t.isJoker);
 
   if (set.type === 'run') {
     if (rest.length === 0) return jokers.length >= 3; // all jokers: invalid in standard rules
     const color = rest[0].color;
-    if (rest.some((t) => t.color !== color)) return false;
-    const values = rest.map((t) => t.value).sort((a, b) => a - b);
+    if (rest.some((t: Tile) => t.color !== color)) return false;
+    const values = rest.map((t: Tile) => t.value).sort((a: number, b: number) => a - b);
     const unique = [...new Set(values)];
     if (unique.length !== values.length) return false; // duplicate values
     const span = Math.max(...values) - Math.min(...values) + 1;
@@ -123,8 +123,8 @@ export function validateSet(set: GameSet): boolean {
     if (set.tiles.length > 4) return false;
     if (rest.length === 0) return false;
     const value = rest[0].value;
-    if (rest.some((t) => t.value !== value)) return false;
-    const colors = new Set(rest.map((t) => t.color));
+    if (rest.some((t: Tile) => t.value !== value)) return false;
+    const colors = new Set(rest.map((t: Tile) => t.color));
     if (colors.size !== rest.length) return false; // duplicate color
     return rest.length + jokers.length <= 4;
   }
@@ -139,7 +139,7 @@ export function validateBoard(board: GameSet[]): boolean {
   const allIds: string[] = [];
   for (const set of board) {
     if (!validateSet(set)) return false;
-    for (const t of set.tiles) {
+    for (const t of set.tiles as Tile[]) {
       allIds.push(t.id);
     }
   }
@@ -156,7 +156,7 @@ export function validateFirstMeld(
   if (!validateBoard(sets)) return false;
   let sum = 0;
   for (const set of sets) {
-    for (const t of set.tiles) {
+    for (const t of set.tiles as Tile[]) {
       sum += tileScore(t);
     }
   }
@@ -169,14 +169,14 @@ export function validateFirstMeld(
 function cloneGame(game: Game): Game {
   return {
     ...game,
-    players: game.players.map((p) => ({
+    players: game.players.map((p: Player) => ({
       ...p,
-      tiles: p.tiles.map((t) => ({ ...t })),
+      tiles: p.tiles.map((t: Tile) => ({ ...t })),
     })),
-    pool: game.pool.map((t) => ({ ...t })),
-    board: game.board.map((s) => ({
+    pool: game.pool.map((t: Tile) => ({ ...t })),
+    board: game.board.map((s: GameSet) => ({
       ...s,
-      tiles: s.tiles.map((t) => ({ ...t })),
+      tiles: s.tiles.map((t: Tile) => ({ ...t })),
     })),
   };
 }
@@ -187,7 +187,7 @@ function cloneGame(game: Game): Game {
 function tileIdsInSets(sets: GameSet[]): Set<string> {
   const ids = new Set<string>();
   for (const set of sets) {
-    for (const t of set.tiles) ids.add(t.id);
+    for (const t of set.tiles as Tile[]) ids.add(t.id);
   }
   return ids;
 }
@@ -212,7 +212,7 @@ export function validateMove(
   }
 
   const player = game.players[playerIndex];
-  const handIds = new Set(player.tiles.map((t) => t.id));
+  const handIds = new Set(player.tiles.map((t: Tile) => t.id));
   const boardIds = tileIdsInSets(game.board);
 
   if (move.type === 'meld') {
@@ -295,7 +295,7 @@ export function applyMove(game: Game, playerIndex: number, move: Move): Game {
 
   if (move.type === 'meld' && move.sets && move.sets.length > 0) {
     const meldIds = tileIdsInSets(move.sets);
-    player.tiles = player.tiles.filter((t) => !meldIds.has(t.id));
+    player.tiles = player.tiles.filter((t: Tile) => !meldIds.has(t.id));
     g.board = [...g.board, ...move.sets];
     player.hasMadeInitialMeld = true;
     return g;
@@ -308,8 +308,8 @@ export function applyMove(game: Game, playerIndex: number, move: Move): Game {
     for (const id of newBoardIds) {
       if (!boardIds.has(id)) fromHand.add(id);
     }
-    player.tiles = player.tiles.filter((t) => !fromHand.has(t.id));
-    g.board = move.sets.map((s) => ({ ...s, tiles: s.tiles.map((t) => ({ ...t })) }));
+    player.tiles = player.tiles.filter((t: Tile) => !fromHand.has(t.id));
+    g.board = move.sets.map((s: GameSet) => ({ ...s, tiles: s.tiles.map((t: Tile) => ({ ...t })) }));
     return g;
   }
 
@@ -348,7 +348,7 @@ export function computeScores(
   for (let i = 0; i < game.players.length; i++) {
     if (i === winnerIndex) continue;
     const p = game.players[i];
-    const penalty = p.tiles.reduce((sum, t) => sum + tilePenalty(t), 0);
+    const penalty = p.tiles.reduce((sum: number, t: Tile) => sum + tilePenalty(t), 0);
     result[p.userId] = -penalty;
     totalPenalty += penalty;
   }

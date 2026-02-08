@@ -2,7 +2,7 @@
  * In-memory store for active games. Used by Socket.io handlers to get/update game state.
  * No persistence; process memory only.
  */
-import type { Game } from '../../../shared/types';
+import type { Game } from '../shared/types.js';
 
 const games = new Map<string, Game>();
 

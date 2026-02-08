@@ -29,7 +29,7 @@ function runJob(name: string, fn: () => Promise<void>): void {
     try {
       await fn();
       console.log(`${LOG_PREFIX} Job "${name}" finished (${Date.now() - start}ms)`);
-    } catch (err) {
+    } catch (err: any) {
       console.error(`${LOG_PREFIX} Job "${name}" error:`, err);
     }
   })();

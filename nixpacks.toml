@@ -1,0 +1,12 @@
+# Nixpacks config for Railway — use legacy-peer-deps to avoid ERESOLVE (e.g. React 18 vs react-virtual)
+# Disable automatic root install; only run our install and build.
+# https://docs.railway.app/reference/nixpacks
+
+[phases.setup]
+cmds = []
+
+[phases.install]
+cmds = ["npm install --legacy-peer-deps"]
+
+[phases.build]
+cmds = ["cd backend && npm ci --legacy-peer-deps && npm run build"]

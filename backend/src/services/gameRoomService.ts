@@ -1,5 +1,5 @@
 // Servicio de Salas de Juego e Invitaciones
-import { Game, GameMode, Player, GameRoomSettings } from '../../../shared/types';
+import { Game, GameMode, Player, GameRoomSettings } from '../shared/types.js';
 import { io } from '../server.js';
 import { createDeck, deal } from './gameLogicService.js';
 import { activeGameStore } from './activeGameStore.js';
@@ -320,6 +320,7 @@ export class GameRoomService {
         userId: p.userId,
         name: p.name,
         avatar: p.avatar,
+        tiles: [],
         score: p.score,
       })),
       maxPlayers: room.maxPlayers,

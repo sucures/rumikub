@@ -45,7 +45,7 @@ export async function runRecoveryCleanup(): Promise<void> {
     if (expiredCount > 0 || deletedCount > 0) {
       logInfo(`cleanup: marked ${expiredCount} expired, deleted ${deletedCount} old tickets`);
     }
-  } catch (err) {
+  } catch (err: any) {
     logError('cleanup failed', err);
   }
 }

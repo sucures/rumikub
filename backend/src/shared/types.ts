@@ -1,17 +1,16 @@
-// Tipos compartidos entre frontend y backend
+// Tipos compartidos entre frontend y backend (backend copy for type-checking)
 
 export type Color = 'red' | 'blue' | 'yellow' | 'black';
 export type TileValue = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 export type GameMode = 'classic' | 'fast' | 'tournament' | 'practice';
 export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'expert';
 
-// Fichas y Juego
 export interface Tile {
   id: string;
   value: TileValue;
   color: Color;
   isJoker: boolean;
-  nftId?: string; // Para NFTs especiales
+  nftId?: string;
 }
 
 export interface GameSet {
@@ -30,7 +29,6 @@ export interface Player {
   score: number;
   isBot?: boolean;
   difficulty?: DifficultyLevel;
-  /** True after the player has placed their first meld (e.g. >= 30 points). */
   hasMadeInitialMeld?: boolean;
 }
 
@@ -48,11 +46,10 @@ export interface Game {
   chat?: ChatMessage[];
 }
 
-// Room and custom game settings (shared by frontend and backend)
 export interface GameRoomSettings {
   maxPlayers: 2 | 3 | 4;
   gameMode: GameMode;
-  timeLimit?: number; // seconds, undefined = no limit
+  timeLimit?: number;
   initialTiles: number;
   allowJokers: boolean;
   minInitialScore: number;
@@ -62,9 +59,9 @@ export interface GameRoomSettings {
 
 export interface CustomGameSettings {
   betType: 'coins' | 'tokens' | 'none';
-  betAmount: number; // 10 to 1,000,000
+  betAmount: number;
   useRealTokens: boolean;
-  timePerMove: number; // 10 to 30 seconds
+  timePerMove: number;
   timePerGame?: number;
   timeWarning?: number;
   initialTiles: number;
@@ -81,7 +78,6 @@ export interface CustomGameSettings {
   password?: string;
 }
 
-// Move and validation (game engine)
 export type MoveType = 'meld' | 'manipulate' | 'draw' | 'end_turn';
 
 export interface Move {
@@ -96,7 +92,6 @@ export interface ValidationResult {
   game?: Game;
 }
 
-// Chat
 export interface ChatMessage {
   id: string;
   userId: string;
@@ -108,7 +103,6 @@ export interface ChatMessage {
   gameId?: string;
 }
 
-// Usuario
 export interface User {
   id: string;
   email: string;
@@ -117,9 +111,9 @@ export interface User {
   avatar?: string;
   level: number;
   experience: number;
-  coins: number; // RumiCoins
-  gems?: number; // RumiGems (premium currency)
-  rumTokens: number; // RUM Token (cripto)
+  coins: number;
+  gems?: number;
+  rumTokens: number;
   walletAddress?: string;
   premium: boolean;
   premiumExpiresAt?: Date;
@@ -129,9 +123,10 @@ export interface User {
   achievements: Achievement[];
   friends: string[];
   blockedUsers: string[];
-  partnerCode?: string; // Código de partner/afiliado
-  referralCode?: string; // Código de referido del usuario
-  referredBy?: string; // Usuario que lo refirió
+  partnerCode?: string;
+  referralCode?: string;
+  referredBy?: string;
+  referralsCount?: number;
 }
 
 export interface UserStats {
@@ -154,7 +149,6 @@ export interface Achievement {
   rarity: 'common' | 'rare' | 'epic' | 'legendary';
 }
 
-// User-created tournaments (Step 17)
 export type TournamentStatus = 'draft' | 'open' | 'in_progress' | 'finished';
 
 export interface TournamentRulesetDto {
@@ -192,7 +186,6 @@ export interface TournamentWithDetailsDto {
   participantCount: number;
 }
 
-// Torneos (legacy/future)
 export interface Tournament {
   id: string;
   name: string;
@@ -201,7 +194,7 @@ export interface Tournament {
   status: 'upcoming' | 'registration' | 'active' | 'finished';
   maxParticipants: number;
   currentParticipants: number;
-  entryFee: number; // En coins o tokens
+  entryFee: number;
   prizePool: PrizePool;
   bracket?: TournamentBracket;
   startDate: Date;
@@ -210,7 +203,7 @@ export interface Tournament {
 }
 
 export interface PrizePool {
-  total: number; // En coins o tokens
+  total: number;
   distribution: {
     position: number;
     amount: number;
@@ -221,7 +214,7 @@ export interface PrizePool {
 export interface TournamentRules {
   maxPlayers: number;
   gameMode: GameMode;
-  timeLimit?: number; // En segundos
+  timeLimit?: number;
   maxGames: number;
 }
 
@@ -243,7 +236,6 @@ export interface TournamentMatch {
   status: 'pending' | 'in_progress' | 'finished';
 }
 
-// Partners y Afiliados
 export interface Partner {
   id: string;
   code: string;
@@ -256,7 +248,7 @@ export interface Partner {
     instagram?: string;
     website?: string;
   };
-  referralRate: number; // Porcentaje de comisión
+  referralRate: number;
   totalReferrals: number;
   totalEarnings: number;
   status: 'active' | 'inactive' | 'suspended';
@@ -274,7 +266,6 @@ export interface PartnerReward {
   paidAt?: Date;
 }
 
-// NFTs y Cripto
 export interface NFT {
   id: string;
   tokenId: string;
@@ -288,7 +279,7 @@ export interface NFT {
     tileSet?: string;
     specialEffects?: string[];
   };
-  price?: number; // En ETH o RUM
+  price?: number;
   forSale: boolean;
   createdAt: Date;
 }
@@ -305,7 +296,6 @@ export interface CryptoTransaction {
   confirmedAt?: Date;
 }
 
-// Compras en Tienda
 export interface ShopItem {
   id: string;
   name: string;
@@ -336,7 +326,6 @@ export interface Purchase {
   createdAt: Date;
 }
 
-// Social Media Integration
 export interface SocialPost {
   id: string;
   platform: 'youtube' | 'telegram' | 'twitter' | 'instagram';
@@ -354,27 +343,9 @@ export interface SocialPost {
   };
 }
 
-// Configuración de Community
 export interface CommunityConfig {
-  youtube: {
-    channelId: string;
-    apiKey: string;
-    enabled: boolean;
-  };
-  telegram: {
-    botToken: string;
-    channelId: string;
-    groupId: string;
-    enabled: boolean;
-  };
-  twitter: {
-    apiKey: string;
-    apiSecret: string;
-    accessToken: string;
-    enabled: boolean;
-  };
-  instagram: {
-    apiKey: string;
-    enabled: boolean;
-  };
+  youtube: { channelId: string; apiKey: string; enabled: boolean };
+  telegram: { botToken: string; channelId: string; groupId: string; enabled: boolean };
+  twitter: { apiKey: string; apiSecret: string; accessToken: string; enabled: boolean };
+  instagram: { apiKey: string; enabled: boolean };
 }

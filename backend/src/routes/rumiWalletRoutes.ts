@@ -94,7 +94,7 @@ router.post('/simulate-payment', authenticate, async (req: AuthRequest, res) => 
     }
     const merchant = String(merchantName ?? 'Unknown').slice(0, 100);
     const result = await simulateCardPayment(userId, amt, merchant);
-    res.json({ success: true, ...result });
+    res.json({ ...result, success: true });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Failed to simulate payment';
     const status = message === 'Insufficient balance' ? 400 : 500;

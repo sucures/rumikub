@@ -39,7 +39,7 @@ async function getClient(): Promise<RedisClientType | null> {
         console.warn('[cache] Redis client error:', err.message);
       });
       await client.connect();
-    } catch (err) {
+    } catch (err: any) {
       console.error('[cache] Redis connection failed:', (err as Error).message);
       client = null;
     }
@@ -71,7 +71,7 @@ export async function getCachedBalance(userId: string): Promise<number | null> {
     const val = parseInt(raw, 10);
     logDebug(`balance hit userId=${userId}`);
     return Number.isNaN(val) ? null : val;
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[cache] Redis get balance error:', (err as Error).message);
     return null;
   }
@@ -83,7 +83,7 @@ export async function setCachedBalance(userId: string, balance: number): Promise
   if (!c) return;
   try {
     await c.setEx(BALANCE_KEY_PREFIX + userId, walletBalanceTtl, String(balance));
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[cache] Redis set balance error:', (err as Error).message);
   }
 }
@@ -95,7 +95,7 @@ export async function invalidateBalance(userId: string): Promise<void> {
   try {
     await c.del(BALANCE_KEY_PREFIX + userId);
     logInfo(`invalidate balance userId=${userId}`);
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[cache] Redis invalidate balance error:', (err as Error).message);
   }
 }
@@ -118,7 +118,7 @@ export async function getCachedTransactions(
       ...t,
       createdAt: new Date(t.createdAt),
     }));
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[cache] Redis get transactions error:', (err as Error).message);
     return null;
   }
@@ -136,7 +136,7 @@ export async function setCachedTransactions(
       transactions.map((t) => ({ ...t, createdAt: t.createdAt.toISOString() }))
     );
     await c.setEx(TX_KEY_PREFIX + userId, walletTransactionsTtl, serialized);
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[cache] Redis set transactions error:', (err as Error).message);
   }
 }
@@ -148,7 +148,7 @@ export async function invalidateTransactions(userId: string): Promise<void> {
   try {
     await c.del(TX_KEY_PREFIX + userId);
     logInfo(`invalidate transactions userId=${userId}`);
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[cache] Redis invalidate transactions error:', (err as Error).message);
   }
 }

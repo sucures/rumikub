@@ -37,7 +37,7 @@ import {
   checkWin,
   computeScores,
 } from './services/gameLogicService.js';
-import type { Move } from '../../../shared/types';
+import type { Move, Player } from './shared/types.js';
 
 dotenv.config();
 
@@ -184,7 +184,7 @@ io.on('connection', (socket) => {
       socket.emit('error', { message: 'Game not found' });
       return;
     }
-    const playerIndex = game.players.findIndex((p) => p.userId === userId);
+    const playerIndex = game.players.findIndex((p: Player) => p.userId === userId);
     if (playerIndex < 0) {
       socket.emit('error', { message: 'You are not in this game' });
       return;
@@ -235,7 +235,7 @@ io.on('connection', (socket) => {
       socket.emit('error', { message: 'Game not found' });
       return;
     }
-    const playerIndex = game.players.findIndex((p) => p.userId === userId);
+    const playerIndex = game.players.findIndex((p: Player) => p.userId === userId);
     if (playerIndex < 0) {
       socket.emit('error', { message: 'You are not in this game' });
       return;
@@ -269,7 +269,7 @@ io.on('connection', (socket) => {
       socket.emit('error', { message: 'Game not found' });
       return;
     }
-    const playerIndex = game.players.findIndex((p) => p.userId === userId);
+    const playerIndex = game.players.findIndex((p: Player) => p.userId === userId);
     if (playerIndex < 0) {
       socket.emit('error', { message: 'You are not in this game' });
       return;

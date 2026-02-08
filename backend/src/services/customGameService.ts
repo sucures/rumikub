@@ -1,5 +1,5 @@
 // Servicio de Juegos Personalizados con Apuestas
-import { Game, GameMode, Player, CustomGameSettings } from '../../../shared/types';
+import { Game, GameMode, Player, CustomGameSettings } from '../shared/types.js';
 import { cryptoService } from './cryptoService.js';
 
 export type { CustomGameSettings };
@@ -152,6 +152,7 @@ export class CustomGameService {
     // if (!game) {
     //   throw new Error('Juego no encontrado');
     // }
+    const game = null as unknown as { settings: CustomGameSettings };
 
     // Calcular pool total
     const totalPool = results.length * game.settings.betAmount;
@@ -161,12 +162,14 @@ export class CustomGameService {
     for (const result of results) {
       const prize = prizePool[result.position - 1];
       if (prize && prize > 0) {
-        await this.distributePrize(
-          result.playerId,
-          prize,
-          game.settings.betType,
-          game.settings.useRealTokens
-        );
+        if (game.settings.betType !== 'none') {
+          await this.distributePrize(
+            result.playerId,
+            prize,
+            game.settings.betType as 'coins' | 'tokens',
+            game.settings.useRealTokens
+          );
+        }
       }
 
       // Resolver apuesta
@@ -327,8 +330,8 @@ export class CustomGameService {
     }
 
     // Validar distribución de premios
-    const totalPercentage = Object.values(settings.prizeDistribution).reduce(
-      (sum, val) => sum + (val || 0),
+    const totalPercentage = (Object.values(settings.prizeDistribution) as (number | undefined)[]).reduce<number>(
+      (sum: number, val: number | undefined) => sum + (val || 0),
       0
     );
     if (totalPercentage > 100) {

@@ -25,7 +25,7 @@ async function getClient(): Promise<RedisClientType | null> {
         console.warn('[otp-cache] Redis error:', err.message);
       });
       await client.connect();
-    } catch (err) {
+    } catch (err: any) {
       console.error('[otp-cache] Redis connection failed:', (err as Error).message);
       client = null;
     }
@@ -42,7 +42,7 @@ export async function setOtp(key: string, code: string): Promise<void> {
   if (!c) return;
   try {
     await c.setEx(OTP_PREFIX + key, ttl, code);
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[otp-cache] set OTP error:', (err as Error).message);
   }
 }
@@ -56,7 +56,7 @@ export async function consumeOtp(key: string): Promise<string | null> {
     if (value == null) return null;
     await c.del(OTP_PREFIX + key);
     return value;
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[otp-cache] consume OTP error:', (err as Error).message);
     return null;
   }

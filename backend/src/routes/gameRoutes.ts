@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { authenticate, type AuthRequest } from '../middleware/auth.js';
 import { activeGameStore } from '../services/activeGameStore.js';
 import { antiCheatService } from '../services/antiCheatService.js';
+import type { Player } from '../shared/types.js';
 
 const router = Router();
 
@@ -29,7 +30,7 @@ router.post('/:id/validate-move', authenticate, async (req: AuthRequest, res) =>
     const gameId = req.params.id;
     const game = activeGameStore.getGame(gameId);
     if (!game) return res.status(404).json({ success: false, error: 'Game not found' });
-    const playerIndex = game.players.findIndex((p) => p.userId === userId);
+    const playerIndex = game.players.findIndex((p: Player) => p.userId === userId);
     if (playerIndex < 0) return res.status(403).json({ success: false, error: 'Not in game' });
     const { move } = req.body ?? {};
     if (!move) return res.status(400).json({ success: false, error: 'move required' });
@@ -52,7 +53,7 @@ router.get('/:id', authenticate, (req: AuthRequest, res) => {
       return res.status(404).json({ success: false, error: 'Game not found' });
     }
 
-    const isPlayer = game.players.some((p) => p.userId === userId);
+    const isPlayer = game.players.some((p: Player) => p.userId === userId);
     if (!isPlayer) {
       return res.status(403).json({ success: false, error: 'Not a player in this game' });
     }

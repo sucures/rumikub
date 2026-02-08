@@ -35,7 +35,7 @@ export async function logAudit(
       metadata: metadata ?? null,
       createdAt: new Date(),
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error('[audit] failed to insert:', (err as Error).message);
   }
 }

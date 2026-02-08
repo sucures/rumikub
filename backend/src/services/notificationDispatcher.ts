@@ -95,7 +95,7 @@ export async function sendPushNotification(userId: string, payload: PushPayload)
     try {
       await sendExpoPush(row.token, payload.title, payload.body, { ...data });
       console.log('[push] Sent to user', userId);
-    } catch (err) {
+    } catch (err: any) {
       const msg = err instanceof Error ? err.message : 'Unknown';
       if (msg === 'DeviceNotRegistered') {
         await markTokenInvalid(row.id).catch((e) => console.warn('[push] markTokenInvalid failed:', e));

@@ -1,10 +1,10 @@
 // Servicio de Criptomonedas y NFTs
 import { ethers } from 'ethers';
-import { CryptoTransaction, NFT, ShopItem, Purchase } from '../../../shared/types';
+import { CryptoTransaction, NFT, ShopItem, Purchase } from '../shared/types.js';
 
 export class CryptoService {
   private provider: ethers.JsonRpcProvider;
-  private wallet: ethers.Wallet;
+  private wallet!: ethers.Wallet;
   
   // Direcciones de contratos (deben configurarse según tu deploy)
   private RUM_TOKEN_ADDRESS = process.env.RUM_TOKEN_ADDRESS || '';
@@ -42,7 +42,7 @@ export class CryptoService {
       const decimals = await tokenContract.decimals();
       
       return parseFloat(ethers.formatUnits(balance, decimals));
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error getting RUM balance:', error);
       return 0;
     }
@@ -69,7 +69,7 @@ export class CryptoService {
       await tx.wait();
 
       return tx.hash;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error transferring RUM:', error);
       throw error;
     }
@@ -177,7 +177,7 @@ export class CryptoService {
       // await NFTModel.create(nft);
 
       return nft;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error minting NFT:', error);
       throw error;
     }
@@ -243,12 +243,13 @@ export class CryptoService {
   private async verifyTransaction(txHash: string): Promise<any> {
     try {
       const receipt = await this.provider.getTransactionReceipt(txHash);
+      if (!receipt) return null;
       return {
         hash: txHash,
         status: receipt.status === 1 ? 'confirmed' : 'failed',
         blockNumber: receipt.blockNumber,
       };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error verifying transaction:', error);
       return null;
     }

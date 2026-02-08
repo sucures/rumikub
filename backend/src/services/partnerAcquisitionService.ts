@@ -1,5 +1,5 @@
 // Servicio de Captación de Partners
-import { Partner } from '../../../shared/types';
+import { Partner } from '../shared/types.js';
 
 export interface PartnerApplication {
   id: string;

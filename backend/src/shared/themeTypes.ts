@@ -1,33 +1,12 @@
-// Tipos para Temas y Personalización
+// Tipos para Temas y Personalización (backend copy for type-checking)
 
-export type ThemeName = 
-  | 'classic' 
-  | 'modern' 
-  | 'dark' 
-  | 'neon' 
-  | 'ocean' 
-  | 'forest' 
-  | 'sunset' 
-  | 'royal' 
-  | 'minimal' 
-  | 'retro'
-  | 'premium_gold'
-  | 'premium_diamond'
-  | 'premium_platinum';
+export type ThemeName =
+  | 'classic' | 'modern' | 'dark' | 'neon' | 'ocean' | 'forest' | 'sunset' | 'royal' | 'minimal' | 'retro'
+  | 'premium_gold' | 'premium_diamond' | 'premium_platinum';
 
-export type TileDesign = 
-  | 'standard' 
-  | 'rounded' 
-  | 'sharp' 
-  | 'glossy' 
-  | 'matte' 
-  | 'neon_glow' 
-  | 'gradient' 
-  | 'textured' 
-  | 'animated' 
-  | 'premium_3d'
-  | 'premium_crystal'
-  | 'premium_metallic';
+export type TileDesign =
+  | 'standard' | 'rounded' | 'sharp' | 'glossy' | 'matte' | 'neon_glow' | 'gradient' | 'textured' | 'animated'
+  | 'premium_3d' | 'premium_crystal' | 'premium_metallic';
 
 export type FontSize = 'small' | 'medium' | 'large' | 'extra_large';
 export type Brightness = 'dark' | 'normal' | 'bright' | 'very_bright';
@@ -60,7 +39,7 @@ export interface Theme {
   animations: boolean;
   effects: string[];
   previewImage?: string;
-  price?: number; // En coins o tokens
+  price?: number;
   unlocked: boolean;
 }
 
@@ -74,7 +53,7 @@ export interface SoundTheme {
   error: string;
   notification: string;
   backgroundMusic?: string;
-  volume: number; // 0-100
+  volume: number;
 }
 
 export interface UserThemeSettings {

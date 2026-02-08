@@ -133,7 +133,7 @@ export async function sendEmailOtp(userId: string): Promise<void> {
       subject: 'Rumi Wallet – OTP Code',
       text: `Your verification code is: ${code}\n\nIt expires in 2 minutes.`,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[2fa] Email OTP send failed:', (err as Error).message);
     if (process.env.NODE_ENV === 'development' || process.env.DEBUG?.includes('2fa')) {
       console.info(`[2fa] Dev OTP for userId=${userId}: ${code}`);

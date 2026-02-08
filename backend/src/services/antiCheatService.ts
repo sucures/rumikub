@@ -3,8 +3,8 @@ import { eq, and, desc } from 'drizzle-orm';
 import { db } from '../db/index.js';
 import { gameActionLogs, suspiciousEvents, userReputation, tournamentMatches } from '../db/schema.js';
 import type { NewGameActionLogRow, NewSuspiciousEventRow } from '../db/schema.js';
-import { validateMove as gameValidateMove, type ValidationResult } from './gameLogicService.js';
-import type { Game, Move } from '../../../shared/types';
+import { validateMove as gameValidateMove } from './gameLogicService.js';
+import type { Game, Move, ValidationResult } from '../shared/types.js';
 
 function genId(prefix: string): string {
   return `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;

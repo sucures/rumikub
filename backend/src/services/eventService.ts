@@ -1,5 +1,5 @@
 // Servicio de Eventos
-import { User } from '../../../shared/types';
+import { User } from '../shared/types.js';
 
 export interface GameEvent {
   id: string;
@@ -11,6 +11,7 @@ export interface GameEvent {
   status: 'upcoming' | 'active' | 'finished';
   rewards: EventReward[];
   participants: string[]; // User IDs
+  participantsCount?: number; // derived, for API responses
   maxParticipants?: number;
   requirements?: EventRequirements;
   bannerImage?: string;

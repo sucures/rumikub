@@ -62,7 +62,7 @@ export async function sendEmailOtp(req: AuthRequest, res: Response): Promise<voi
   try {
     await twoFactorService.sendEmailOtp(userId);
     res.json({ success: true });
-  } catch (err) {
+  } catch (err: any) {
     const msg = err instanceof Error ? err.message : 'Failed to send email OTP';
     res.status(500).json({ success: false, error: msg });
   }
@@ -107,7 +107,7 @@ export async function sendSmsOtp(req: AuthRequest, res: Response): Promise<void>
   try {
     await twoFactorService.sendSmsOtp(userId);
     res.json({ success: true });
-  } catch (err) {
+  } catch (err: any) {
     const msg = err instanceof Error ? err.message : 'Failed to send SMS OTP';
     res.status(400).json({ success: false, error: msg });
   }

@@ -1,5 +1,5 @@
 // Servicio de Premios y Recompensas
-import { User } from '../../../shared/types';
+import { User } from '../shared/types.js';
 
 export interface Reward {
   id: string;

@@ -73,7 +73,7 @@ export async function getWalletTransactions(
 ): Promise<WalletTransactionDto[]> {
   if (offset === 0) {
     const cached = await getCachedTransactions(userId);
-    if (cached !== null) return cached.slice(0, limit);
+    if (cached !== null) return cached.slice(0, limit) as WalletTransactionDto[];
   }
   const rows = await db
     .select({
@@ -96,7 +96,7 @@ export async function getWalletTransactions(
     balanceAfter: r.balanceAfter,
     metadata: (r.metadata ?? {}) as Record<string, unknown>,
     createdAt: r.createdAt,
-  }));
+  })) as WalletTransactionDto[];
   if (offset === 0) await setCachedTransactions(userId, result);
   return result;
 }

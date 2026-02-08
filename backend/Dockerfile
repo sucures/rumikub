@@ -10,7 +10,7 @@ COPY shared ./shared
 COPY backend/package.json backend/package-lock.json* backend/tsconfig.json ./
 COPY backend/src ./src
 
-RUN npm ci && npm run build
+RUN npm ci --legacy-peer-deps && npm run build
 
 FROM node:20-alpine
 
@@ -23,7 +23,7 @@ ENV NODE_ENV=production
 COPY --from=builder /app/shared /shared
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --legacy-peer-deps
 
 EXPOSE 3000
 

@@ -28,7 +28,7 @@ export async function getBalance(req: AuthRequest, res: Response, next: NextFunc
     const balance = await getWalletBalance(userId);
     const r1Token = getR1TokenMetadata();
     res.json({ success: true, balance, r1Token: r1Token ?? undefined });
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 }
@@ -44,7 +44,7 @@ export async function getWalletStatus(req: AuthRequest, res: Response, next: Nex
       balance,
       r1Token: r1Token ?? undefined,
     });
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 }
@@ -63,7 +63,7 @@ export async function getR1BalanceHandler(req: AuthRequest, res: Response, next:
       return;
     }
     res.json({ success: true, ...result });
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 }
@@ -80,7 +80,7 @@ export async function broadcastR1Transfer(req: AuthRequest, res: Response, next:
     }
     const { signature } = await broadcastSignedTransaction(signedTransaction);
     res.json({ success: true, signature });
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 }
@@ -91,7 +91,7 @@ export async function getTransactions(req: AuthRequest, res: Response, next: Nex
     const { limit, offset } = limitOffset(req);
     const transactions = await getWalletTransactions(userId, limit, offset);
     res.json({ success: true, transactions });
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 }
@@ -102,7 +102,7 @@ export async function spend(req: AuthRequest, res: Response, next: NextFunction)
     const body = req.body as SpendInput;
     const { balance, transactionId } = await spendTokens(userId, body.amount, body.metadata);
     res.json({ success: true, balance, transactionId });
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 }
@@ -118,7 +118,7 @@ export async function transfer(req: AuthRequest, res: Response, next: NextFuncti
       body.metadata
     );
     res.json({ success: true, balance: fromBalance, toBalance, transactionId });
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 }
@@ -129,7 +129,7 @@ export async function simulatePayment(req: AuthRequest, res: Response, next: Nex
     const body = req.body as SimulatePaymentInput;
     const result = await simulateCardPayment(userId, body.amount, body.merchantName);
     res.json({ ...result, success: true });
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 }
@@ -144,7 +144,7 @@ export async function getQrPayload(req: AuthRequest, res: Response, next: NextFu
     const result = buildQrPayload(address, userId);
     console.info(`${LOG_PREFIX} QR payload generated for userId=${userId}`);
     res.json({ success: true, ...result });
-  } catch (err) {
+  } catch (err: any) {
     next(err);
   }
 }
@@ -154,7 +154,7 @@ export async function parseQrPayloadHandler(req: AuthRequest, res: Response, nex
     const payload = (req.body as { payload?: string })?.payload ?? '';
     const { address, userId } = parseQrPayload(payload);
     res.json({ success: true, address, userId });
-  } catch (err) {
+  } catch (err: any) {
     console.warn(`${LOG_PREFIX} Invalid QR payload parse attempt`, err instanceof Error ? err.message : err);
     if (err instanceof SyntaxError || err instanceof ZodError) {
       return res.status(400).json({

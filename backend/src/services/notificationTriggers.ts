@@ -23,7 +23,7 @@ async function dispatchNotification(
       body: message,
       data: { screen, url, notificationId: id },
     });
-  } catch (err) {
+  } catch (err: any) {
     console.warn('[notification] Trigger failed:', err);
   }
 }
