@@ -2,7 +2,7 @@
 # https://docs.railway.app/reference/config-as-code
 
 [build]
-buildCommand = "cd backend && npm ci && npm run build"
+builder = "DOCKERFILE"
 
 [deploy]
 startCommand = "node backend/dist/server.js"
